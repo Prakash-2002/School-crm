@@ -39,7 +39,7 @@ export default function LoginPage() {
   };
 
   const handleQuickDemoLogin = () => {
-    loginDemoAdmin('admin@greenwood.edu');
+    loginDemoAdmin('admin@school.com');
     navigate(from, { replace: true });
   };
 
@@ -50,7 +50,7 @@ export default function LoginPage() {
           Portal Authentication
         </h2>
         <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', textAlign: 'center', marginBottom: '1.5rem' }}>
-          Sign in to access Greenwood Academy administrator tools.
+          Sign in to access administrator tools.
         </p>
 
         {/* Notice for Preview / Missing .env.local */}
@@ -64,20 +64,8 @@ export default function LoginPage() {
             fontSize: '0.85rem',
             marginBottom: '1.5rem'
           }}>
-            <div style={{ fontWeight: 600, marginBottom: '0.3rem' }}>
-              ℹ️ Local Preview Mode Active
-            </div>
-            <p style={{ marginBottom: '0.8rem', lineHeight: 1.4 }}>
-              Your Firebase credentials are not yet configured in <code>.env.local</code>. You can click below to log in immediately as an administrator and test all portal features:
-            </p>
-            <button
-              type="button"
-              onClick={handleQuickDemoLogin}
-              className="btn btn-primary"
-              style={{ width: '100%', padding: '0.5rem', fontSize: '0.85rem', fontWeight: 600 }}
-            >
-              ⚡ Quick Sign In as Demo Admin
-            </button>
+            
+           
           </div>
         )}
 
@@ -127,7 +115,7 @@ export default function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@greenwood.edu"
+              placeholder="admin@school.com"
               style={{
                 width: '100%',
                 padding: '0.65rem 0.8rem',
