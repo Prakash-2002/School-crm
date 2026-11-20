@@ -55,15 +55,7 @@ export default function LoginPage() {
 
         {/* Notice for Preview / Missing .env.local */}
         {!isFirebaseConfigured && (
-          <div style={{
-            backgroundColor: '#eff6ff',
-            border: '1px solid #bfdbfe',
-            color: '#1e40af',
-            padding: '1rem',
-            borderRadius: 'var(--border-radius)',
-            fontSize: '0.85rem',
-            marginBottom: '1.5rem'
-          }}>
+          <div >
             
            
           </div>
