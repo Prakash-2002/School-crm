@@ -1,0 +1,49 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.admin == true ||
+        firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isImageBelowLimit() {
+      return request.resource.contentType.matches('image/.*')
+        && request.resource.size < 5 * 1024 * 1024; // 5 MB max
+    }
+
+    // Public blog post images
+    match /blog/{imageId} {
+      // Anyone can view published blog images
+      allow read: if true;
+      // Only authenticated admins can upload or delete blog images
+      allow write: if isAdmin() && isImageBelowLimit();
+    }
+
+    // Theme assets (school logo, banner, favicon)
+    match /theme/{assetId} {
+      // Anyone can view theme assets
+      allow read: if true;
+      // Only admins can upload theme branding
+      allow write: if isAdmin() && isImageBelowLimit();
+    }
+
+    // General public documents / uploads
+    match /public/{filePath=**} {
+      allow read: if true;
+      allow write: if isAdmin() && request.resource.size < 10 * 1024 * 1024; // 10 MB max
+    }
+
+    // Default deny for anything else
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

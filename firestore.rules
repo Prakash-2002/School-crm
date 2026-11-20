@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Visitor Inquiries & Leads (Visitors can submit; authenticated staff can read/manage)
+    match /inquiries/{inquiryId} {
+      allow create: if true;
+      allow read, update, delete: if isAuthenticated();
+    }
+
+    // Public theme & school site settings (Readable by all visitors, editable by authenticated staff/admins)
+    match /school_settings/{settingId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // School Blog Posts / Circulars (Readable by all visitors, editable by authenticated staff/admins)
+    match /blog_posts/{postId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    match /blogPosts/{postId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Admins metadata collection
+    match /admins/{adminId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    // Fallback rule for preview/development
+    match /{document=**} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}
